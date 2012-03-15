@@ -1,7 +1,18 @@
 body {
-	padding-top: 60px;
+	padding-top: 0px;
 	padding-bottom: 40px;
+	background-color: #DDD;
 }
 .sidebar-nav {
 	padding: 9px 0;
+}
+
+.header{
+	padding: 10px 35px 10px 35px;
+}
+
+.content{
+	background-color: #fff;
+	padding: 15px;
+	min-height: 300px;
 }
