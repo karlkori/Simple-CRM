@@ -28,13 +28,24 @@ class Clients_model extends Crud_model {
      * @param  string $order сортировать по возростанию или по спаданию
      * @return array
      */
-    public function get_list($sort = 'id', $order = 'asc')
+    public function get_list($limit, $offset, $sort = 'id', $order = 'asc')
     {
-        $this->db->order_by($sort, $order);
+        $this->db->order_by($sort, $order)
+            ->limit($limit, $offset);
         $query = $this->db->get($this->table);
         return $query->result_array();
     }
-	
+
+    /**
+     * Поулчить количество клиентов
+     * 
+     * @return int
+     */
+    public function get_count()
+    {
+        return $this->db->count_all($this->table);
+    }
+
     /**
      * Обновить данные клиента
      * 

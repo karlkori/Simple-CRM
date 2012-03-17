@@ -25,9 +25,21 @@ class Clients extends CI_Controller {
 	 * Выводим список клиентов
 	 * 
 	 */
-	public function index()
+	public function display($offset = 0)
 	{
-		$this->data['clients'] = $this->clients_model->get_list();
+		$limit = 3;
+		$this->data['clients_count'] = $this->clients_model->get_count();
+		$this->load->library('pagination');
+		$config = array(
+			'base_url' => site_url('clients/display'),
+			'total_rows' => $this->data['clients_count'],
+			'per_page' => $limit,
+			'uri_segment' => 3
+			);
+		$this->pagination->initialize($config);
+		$this->data['pagination'] = $this->pagination->create_links();
+		$this->data['clients'] = $this->clients_model->get_list($limit, $offset);
+
 		$this->layout->render('clients/list', $this->data);
 	}
 
@@ -86,11 +98,11 @@ class Clients extends CI_Controller {
 	            'address' 		=> $this->input->post('address'),
 	            'description' 	=> $this->input->post('description'),
 			);
-			$this->clients_model->add( $this->input->post('id'), $client );
+			$this->clients_model->add( $client );
 			redirect('clients');
 		}
-		$this->data['form_action'] = 'clients/edit/' . $id;			
-		$this->layout->render('clients/edit', $this->data);
+		$this->data['form_action'] = 'clients/add/';			
+		$this->layout->render('clients/add', $this->data);
 	}	
 }
 

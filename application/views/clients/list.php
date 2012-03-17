@@ -30,7 +30,9 @@
 		<?php endforeach; ?>
 		</tbody>
 		</table>
-
+		<?php 
+			echo $pagination; 
+		?>
 
 	</div>
 </div><!--/span-->
