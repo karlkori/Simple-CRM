@@ -36,10 +36,10 @@
                   <?php echo anchor('dashboard', '<i class="icon-home"></i> Консоль'); ?>
               </li>
               <li <?php if ($this->uri->segment(1) == 'clients') echo 'class="active"'; ?> >
-                  <?php echo anchor('clients/list', '<i class="icon-list-alt"></i> Клиенты'); ?>
+                  <?php echo anchor('clients/display', '<i class="icon-list-alt"></i> Клиенты'); ?>
               </li>              
               <li <?php if ($this->uri->segment(1) == 'orders') echo 'class="active"'; ?> >
-                  <?php echo anchor('orders/list', '<i class="icon-book"></i> Счета'); ?>
+                  <?php echo anchor('orders/display', '<i class="icon-book"></i> Счета'); ?>
               </li>
               <li class="nav-header"><hr /></li>
               <li <?php if ($this->uri->segment(2) == 'settings') echo 'class="active"'; ?> >

@@ -16,3 +16,11 @@ body {
 	padding: 15px;
 	min-height: 300px;
 }
+
+.sort-asc:after{
+	content: "▲";
+}
+
+.sort-desc:after{
+	content: "▼";
+}

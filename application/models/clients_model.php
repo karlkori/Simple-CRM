@@ -23,14 +23,20 @@ class Clients_model extends Crud_model {
 	
     /**
      * Поулчить список клиентов
-     * 
-     * @param  string $sort  поле для сортировки
-     * @param  string $order сортировать по возростанию или по спаданию
+     *
+     * @param  int $limit 
+     * @param  int $offset 
+     * @param  string $sort_by  поле для сортировки
+     * @param  string $sort_order сортировать по возростанию или по спаданию
      * @return array
      */
-    public function get_list($limit, $offset, $sort = 'id', $order = 'asc')
+    public function get_list($limit, $offset, $sort_by, $sort_order)
     {
-        $this->db->order_by($sort, $order)
+        $sort_order = ($sort_order == 'desc') ? 'desc' : 'asc';
+        $sort_columns = array('id', 'name', 'contactname', 'tel', 'email', 'address', 'description');
+        $sort_by = in_array($sort_by, $sort_columns) ? $sort_by : 'id';
+ 
+        $this->db->order_by($sort_by, $sort_order)
             ->limit($limit, $offset);
         $query = $this->db->get($this->table);
         return $query->result_array();

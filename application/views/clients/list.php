@@ -8,24 +8,21 @@
 		<thead>
 			<tr>
 				<th></th>
-				<th>Название</th>
-				<th>Контактное лицо</th>
-				<th>Телефоны</th>
-				<th>Е-почта</th>
-				<th>Адрес</th>
-				<th>Примечание</th>
+				<?php foreach ($fields as $field_name => $field_display) : ?>
+				<th <?php if ($sort_by == $field_name) echo "class=\"sort-$sort_order\""; ?> >
+				<?php echo anchor("clients/display/$field_name/" . (($sort_order == 'asc' && $field_name == $sort_by) ? 'desc' : 'asc') , $field_display); ?>
+				</th>
+				<?php endforeach; ?>
+				
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($clients as $client): ?>
 			<tr>
 				<td><?php echo anchor('clients/edit/' . $client['id'],'<i class="icon-pencil"></i>'); ?></td>
-				<td><?php echo $client['name'] ?></td>
-				<td><?php echo $client['contactname'] ?></td>
-				<td><?php echo $client['tel'] ?></td>
-				<td><?php echo $client['email'] ?></td>
-				<td><?php echo $client['address'] ?></td>
-				<td><?php echo $client['description'] ?></td>
+				<?php foreach ($fields as $field_name => $field_display) : ?>
+				<td><?php echo $client[$field_name] ?></td>
+				<?php endforeach; ?>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
@@ -33,6 +30,5 @@
 		<?php 
 			echo $pagination; 
 		?>
-
 	</div>
 </div><!--/span-->

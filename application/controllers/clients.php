@@ -25,20 +25,42 @@ class Clients extends CI_Controller {
 	 * Выводим список клиентов
 	 * 
 	 */
-	public function display($offset = 0)
+	public function display($sort_by='name', $sort_order='asc', $offset = 0)
 	{
-		$limit = 3;
+		$limit = 10;
+		$this->data['fields'] = array(
+			'name' => 'Название',
+			'contactname' => 'Контактное лицо',
+			'tel' => 'Телефоны',
+			'email' => 'Е-почта',
+			'address' => 'Адрес',
+			'description' => 'Примечание'
+			);
+		$this->data['sort_by'] = $sort_by;
+		$this->data['sort_order'] = $sort_order;
 		$this->data['clients_count'] = $this->clients_model->get_count();
 		$this->load->library('pagination');
 		$config = array(
-			'base_url' => site_url('clients/display'),
+			'base_url' => site_url("clients/display/$sort_by/$sort_order"),
 			'total_rows' => $this->data['clients_count'],
 			'per_page' => $limit,
-			'uri_segment' => 3
-			);
+			'uri_segment' => 5,
+			'full_tag_open' => '<div class="pagination"><ul>',
+			'full_tag_close' => '</ul></div>',
+			'first_link' => '<li>Первая</li>',
+			'last_link' => '<li>Последняя</li>',
+			'cur_tag_open' => '<li class="active"><a href="#">',
+			'cur_tag_close' => '</a></li>',
+			'num_tag_open' => '<li>',
+			'num_tag_close' => '</li>',
+			'prev_link' => '&lt;',
+			'prev_tag_open' => '<li>',
+			'prev_tag_close' => '</li>'
+		);			
 		$this->pagination->initialize($config);
+
 		$this->data['pagination'] = $this->pagination->create_links();
-		$this->data['clients'] = $this->clients_model->get_list($limit, $offset);
+		$this->data['clients'] = $this->clients_model->get_list($limit, $offset, $sort_by, $sort_order);
 
 		$this->layout->render('clients/list', $this->data);
 	}
