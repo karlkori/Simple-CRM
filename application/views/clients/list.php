@@ -1,9 +1,6 @@
 <div class="span10">
 	<div class="content">
-		<legend>Список клиентов</legend>
-          <div class="form-actions">
-          	<?php echo anchor('clients/add', 'Добавить', 'class="btn btn-primary"'); ?>
-          </div>
+		<legend>Список клиентов <?php echo anchor('clients/add', '<i class="icon-user"></i> Добавить нового', 'class="btn btn-small"'); ?></legend>
 		<table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
