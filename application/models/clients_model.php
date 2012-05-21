@@ -43,6 +43,31 @@ class Clients_model extends Crud_model {
     }
 
     /**
+     * Получит список имен клиентов с Id для построения select
+     * @param string $sort_by
+     * @param string $sort_order
+     * @return array
+     */
+    public function get_names($sort_by = 'id', $sort_order = 'asc')
+    {
+        $sort_order = ($sort_order == 'desc') ? 'desc' : 'asc';
+        $sort_columns = array('id', 'name');
+        $sort_by = in_array($sort_by, $sort_columns) ? $sort_by : 'id';
+
+        $this->db->select('id, name');
+        $this->db->order_by($sort_by, $sort_order);
+            //->limit($limit, $offset);
+        $query = $this->db->get($this->table);
+
+        $data =array();
+
+        foreach($query->result_array() as $row){
+            $data[$row['id']] = $row['name'];
+        }
+        return $data;
+    }
+
+    /**
      * Поулчить количество клиентов
      * 
      * @return int

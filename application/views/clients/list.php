@@ -16,7 +16,10 @@
 		<tbody>
 		<?php foreach ($clients as $client): ?>
 			<tr>
-				<td><?php echo anchor('clients/edit/' . $client['id'],'<i class="icon-pencil"></i>'); ?></td>
+				<td>
+                    <?php echo anchor('clients/edit/' . $client['id'],'<i class="icon-pencil"></i>', array('title'=>'редактировать')); ?>
+                    <?php echo anchor('orders/filter/' . $client['id'],'<i class="icon-book"></i>', array('title'=>'список заказов')); ?>
+                </td>
 				<?php foreach ($fields as $field_name => $field_display) : ?>
 				<td><?php echo $client[$field_name] ?></td>
 				<?php endforeach; ?>

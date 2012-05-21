@@ -12,8 +12,8 @@ class Orders_model extends Crud_model {
     /**
      * Додать клиента
      *
-     * @param array $data данные о клиенте
-     * @return int id клиента
+     * @param array $data данные о заказе
+     * @return int id заказа
      */
     public function add($data)
     {
@@ -30,7 +30,7 @@ class Orders_model extends Crud_model {
      * @param  string $sort_order сортировать по возростанию или по спаданию
      * @return array
      */
-    public function get_list($limit, $offset, $sort_by, $sort_order)
+    public function get_list($limit, $offset, $sort_by, $sort_order, $filter = false)
     {
         $sort_order = ($sort_order == 'desc') ? 'desc' : 'asc';
         $sort_columns = array('name', 'client_id', 'service_id', 'date_order', 'date_done', 'printing', 'price_client', 'description');
@@ -40,6 +40,7 @@ class Orders_model extends Crud_model {
                 ->join('clients', 'orders.client_id = clients.id')
                 ->order_by($sort_by, $sort_order)
                 ->limit($limit, $offset);
+        if ($filter) $this->db->where('orders.client_id = '.$filter);
         $query = $this->db->get($this->table);
         return $query->result_array();
     }

@@ -7,7 +7,12 @@
                 <th></th>
                 <?php foreach ($fields as $field_name => $field_display) : ?>
                 <th <?php if ($sort_by == $field_name) echo "class=\"sort-$sort_order\""; ?> >
-                    <?php echo anchor("orders/display/$field_name/" . (($sort_order == 'asc' && $field_name == $sort_by) ? 'desc' : 'asc') , $field_display); ?>
+                    <?php
+                        if(isset($filter))
+                            echo anchor("orders/filter/$filter/$field_name/" . (($sort_order == 'asc' && $field_name == $sort_by) ? 'desc' : 'asc') , $field_display);
+                        else
+                            echo anchor("orders/display/$field_name/" . (($sort_order == 'asc' && $field_name == $sort_by) ? 'desc' : 'asc') , $field_display);
+                    ?>
                 </th>
                 <?php endforeach; ?>
 
