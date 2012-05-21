@@ -175,7 +175,7 @@ class Orders extends CI_Controller {
                 'description' 	=> $this->input->post('description'),
             );
             $this->orders_model->add( $order );
-            //redirect('orders');
+            redirect('orders');
         }
         $this->data['form_action'] = 'orders/add/';
         $this->data['clients'] = $this->clients_model->get_names();
