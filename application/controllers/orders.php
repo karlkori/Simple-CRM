@@ -16,8 +16,9 @@ class Orders extends CI_Controller {
         parent::__construct();
         $this->load->model('crud_model');
         $this->load->model('orders_model');
+        $this->load->model('clients_model');
         $this->data['title'] = 'Полиграфия / Заказы';
-        //$this->output->enable_profiler('TRUE');
+        $this->output->enable_profiler('TRUE');
     }
 
 
@@ -66,6 +67,56 @@ class Orders extends CI_Controller {
     }
 
     /**
+     * Выводим список заказов клиента с Id = $filter
+     *
+     * @param $filter
+     * @param string $sort_by
+     * @param string $sort_order
+     * @param int $offset
+     */
+    public function filter($filter, $sort_by='name', $sort_order='asc', $offset = 0)
+    {
+        $limit = 10;
+        $this->data['fields'] = array(
+            'name' => 'Клиент',
+            'service_id' => 'Услуга',
+            'printing' => 'Тираж',
+            'date_order' => 'Дата заказа',
+            'date_done' => 'Дата выдачи',
+            'price_client' => 'Сума для клиента'
+        );
+        $this->data['sort_by'] = $sort_by;
+        $this->data['sort_order'] = $sort_order;
+        $this->data['orders_count'] = $this->orders_model->get_count();
+        $this->load->library('pagination');
+        $config = array(
+            'base_url' => site_url("orders/filter/$filter/$sort_by/$sort_order"),
+            'total_rows' => $this->data['orders_count'],
+            'per_page' => $limit,
+            'uri_segment' => 5,
+            'full_tag_open' => '<div class="pagination"><ul>',
+            'full_tag_close' => '</ul></div>',
+            'first_link' => '<li>Первая</li>',
+            'last_link' => '<li>Последняя</li>',
+            'cur_tag_open' => '<li class="active"><a href="#">',
+            'cur_tag_close' => '</a></li>',
+            'num_tag_open' => '<li>',
+            'num_tag_close' => '</li>',
+            'prev_link' => '&lt;',
+            'prev_tag_open' => '<li>',
+            'prev_tag_close' => '</li>'
+        );
+        $this->pagination->initialize($config);
+
+        $this->data['pagination'] = $this->pagination->create_links();
+        $this->data['orders'] = $this->orders_model->get_list($limit, $offset, $sort_by, $sort_order, (int)$filter);
+        $this->data['filter'] = (int)$filter;
+
+        $this->layout->render('orders/list', $this->data);
+    }
+
+
+    /**
      * Выводим и обрабатываем форму для редактирования данных клиента
      */
     public function edit()
@@ -108,7 +159,8 @@ class Orders extends CI_Controller {
      */
     public function add()
     {
-        $this->form_validation->set_rules('name', 'Название', 'trim|required');
+        $this->form_validation->set_rules('price_client', 'Цену', 'trim|required');
+        $this->form_validation->set_rules('price_me', 'Цену', 'trim|required');
 
         if ($this->form_validation->run() == TRUE)
         {
@@ -123,9 +175,14 @@ class Orders extends CI_Controller {
                 'description' 	=> $this->input->post('description'),
             );
             $this->orders_model->add( $order );
-            redirect('orders');
+            //redirect('orders');
         }
         $this->data['form_action'] = 'orders/add/';
+        $this->data['clients'] = $this->clients_model->get_names();
+        $this->data['services'] = array(
+            '1'=>'Банер',
+            '2'=>'Ситилайт',
+        );
         $this->layout->render('orders/add', $this->data);
     }
 }
