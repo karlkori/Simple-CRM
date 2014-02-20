@@ -1,2 +1,11 @@
 Simply CRM based on Codeigniter v2.
 Clients, orders, materials and services ...
+
+!How to install
+ - Copy all files to document root on server
+ - Create database and import crm.sql - this create some tables with needed sample data
+ - Go to aplication/config
+ - Edit config.php, change value for you domain:
+    $config['base_url']	= 'http://crm';
+ - Edit database.php, set database connection (database, password, username,...)
+ - Check result in your favorite ginger browser
